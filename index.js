@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { Client, Events, GatewayIntentBits, ActivityType, PermissionsBitField } = require('discord.js');
 const { token, mongourl } = require('./keys.json');
-const { kimoChannelID, kimoServerID, botLogChannelID } = require('./ids.json');
+const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID } = require('./ids.json');
 require('log-timestamp');
 
 // Create a new client instance
@@ -102,6 +102,7 @@ client.on(Events.MessageCreate, async (message) => {
       } 
       if (command === 'assignall') {
 
+        const KimoServer = await client.guilds.fetch(kimoServerID);
         await KimoServer.members.fetch();
         const members = KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
         members.forEach(async member => {
@@ -111,6 +112,7 @@ client.on(Events.MessageCreate, async (message) => {
         message.reply('updating user states for all members');
       } 
       if (command === 'forceslice') {
+        console.log ('force slice detected');
         slice(client);
       } 
 

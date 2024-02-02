@@ -5,6 +5,7 @@ const updateUserState = require('./updateUserState');
 const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID } = require('../ids.json');
 
 module.exports = async (client) => {
+    
 
         const currentDate = new Date();
 
@@ -12,7 +13,7 @@ module.exports = async (client) => {
         const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
 
         await KimoServer.members.fetch();
-        const members = KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
+        const members = await KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
 
         await members.forEach( async member => {
 
@@ -30,8 +31,8 @@ module.exports = async (client) => {
 
             userData.currentState = staggerState(userData.currentState);
 
-            const kimoTracker = await KimoTracker.findOne(kimoServerID);
-            if (kimoTracker.kimoActive == false) userData.currentState = DANGER;
+            const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
+            if (kimoTracker.kimoActive == false) userData.currentState = 'DANGER';
             userData.postedToday = false;
             await userData.save();
 

@@ -50,6 +50,7 @@ module.exports = async (client) => {
                     botLogChannel.send('Kimo not active, SLICING non-lethal');
                     kimoChannel.send ('Kimo not active, SLICING non-lethal');
                     kimoChannelDungeon.send ('Kimo not active, SLICING non-lethal');
+                    
                 }
 
 
