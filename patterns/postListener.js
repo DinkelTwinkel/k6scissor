@@ -29,20 +29,20 @@ module.exports = async (client) => {
                 if (result.currentState === 'DEAD') return;
                 // update user
 
-                if (result.postedToday == false) {
+                // if (result.postedToday == false) {
 
-                    console.log ('havent posted today, creating daily fortune')
-                    result.streak += 1;
-                    // reply with daily quote.
-                    const embed = new EmbedBuilder()
-                    .setTitle("Daily Fortune")
-                    .setDescription(await getFortuneCookie(client));
+                //     console.log ('havent posted today, creating daily fortune')
+                //     result.streak += 1;
+                //     // reply with daily quote.
+                //     const embed = new EmbedBuilder()
+                //     .setTitle("Daily Fortune")
+                //     .setDescription(await getFortuneCookie(client));
 
-                    const response = await message.reply({content: `VALID POST: Your current streak is ${result.streak}`, embeds: [embed] })
-                    setTimeout(() => {
-                        response.delete();
-                    }, 30 * 1000);
-                }
+                //     const response = await message.reply({content: `VALID POST: Your current streak is ${result.streak}`, embeds: [embed] })
+                //     setTimeout(() => {
+                //         response.delete();
+                //     }, 30 * 1000);
+                // }
 
                 result.currentState = 'SAFE';
                 result.lastPostTime = currentDate.getTime();
