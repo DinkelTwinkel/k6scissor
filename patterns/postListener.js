@@ -14,7 +14,8 @@ module.exports = async (client) => {
 
         if (message.member.user.bot) return;
 
-        if (message.channel.id != kimoChannelID && message.channel.id != kimoChannelDungeonID ) return;
+        // && message.channel.id != kimoChannelDungeonID 
+        if (message.channel.id != kimoChannelID) return;
 
         if (attachmentTest(message) != null) {
 
