@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { Client, Events, GatewayIntentBits, ActivityType, PermissionsBitField } = require('discord.js');
 const { token, mongourl } = require('./keys.json');
-const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID } = require('./ids.json');
+const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID, kimoChannelDungeonID } = require('./ids.json');
 require('log-timestamp');
 
 // Create a new client instance
@@ -64,6 +64,29 @@ client.once(Events.ClientReady, async c => {
 // new user join auto role
 client.on(Events.GuildMemberAdd, async (member) => {
   // updateUserState(member);
+});
+
+client.on(Events.MessageCreate, async (message) => {
+// listen to island bot for slicing time.
+
+  if (message.content === '!dailyslice' && message.author.id === '1079843787213377606') {
+
+      const KimoServer = await client.guilds.fetch(kimoServerID);
+      const kimoChannel = KimoServer.channels.cache.get(kimoChannelID);
+      const kimoChannelDungeon = KimoServer.channels.cache.get(kimoChannelDungeonID);
+      const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
+
+      console.log('detected daily slice request x 1');
+
+      botLogChannel.send('NEW DAY, SLICING...');
+      kimoChannel.send ('NEW DAY, SLICING...');
+      kimoChannelDungeon.send ('NEW DAY, SLICING...');
+
+      // const result = await KimoTracker.findOne({ serverId: kimoServerID });
+
+      slice(client);
+  }
+
 });
 
 

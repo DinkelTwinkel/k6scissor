@@ -31,7 +31,8 @@ module.exports = async (client) => {
             // }
 
             userData.currentState = staggerState(userData.currentState);
-            if (kimoTracker.kimoActive == false) 
+            console.log (kimoTracker.kimoActive);
+            if (kimoTracker.kimoActive == false && userData.currentState == 'DEAD') 
             {
                 userData.currentState = 'DANGER';
                 botLogChannel.send (`Kimo Inactive. Death Cancelled.`, {"allowed_mentions": {"parse": []}})
