@@ -12,9 +12,12 @@ module.exports = async (client) => {
     // console.log (currentDate.getDay());
     
     if (result == null) return;
+    if (result.kimoActive == false) return console.log ('kimo not active.');
+    console.log ('kimo active...');
 
         // perform twelve o clock check
         if (currentUTCHour >= 12) {
+
 
             const KimoServer = await client.guilds.fetch(kimoServerID);
             const kimoChannel = KimoServer.channels.cache.get(kimoChannelDungeonID);

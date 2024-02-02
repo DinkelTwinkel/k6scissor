@@ -134,6 +134,24 @@ client.on(Events.MessageCreate, async (message) => {
           updateUserState(member);
         })
       }
+
+      if (command === 'activate') {
+        const kimoTracker = await KimoTracker.findOne({serverId: message.guild.id });
+
+        if (kimoTracker.kimoActive == true) {
+
+          kimoTracker.kimoActive = false;
+          await kimoTracker.save();
+          message.channel.send ('Kimo Deactivated');
+
+        }
+        else {
+          kimoTracker.kimoActive = true;
+          await kimoTracker.save();
+          message.channel.send ('Kimo Activated');
+        }
+
+      }
     }
 })
 
