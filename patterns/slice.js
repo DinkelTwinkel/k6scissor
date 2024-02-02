@@ -23,16 +23,19 @@ module.exports = async (client) => {
             if (userData.currentState === 'DEAD') return;
 
             if (userData) {
+            const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
             botLogChannel.send (`Slicing ${member}, changing state to ${userData.currentState} to ${staggerState(userData.currentState)}`, {"allowed_mentions": {"parse": []}})
-
+            
             // if (staggerState(userData.currentState) === 'DEAD') {
                 
             // }
 
             userData.currentState = staggerState(userData.currentState);
-
-            const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
-            if (kimoTracker.kimoActive == false) userData.currentState = 'DANGER';
+            if (kimoTracker.kimoActive == false) 
+            {
+                userData.currentState = 'DANGER';
+                botLogChannel.send (`Kimo Inactive. Death Cancelled.`, {"allowed_mentions": {"parse": []}})
+            }
             userData.postedToday = false;
             await userData.save();
 
