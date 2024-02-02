@@ -29,6 +29,9 @@ module.exports = async (client) => {
             // }
 
             userData.currentState = staggerState(userData.currentState);
+
+            const kimoTracker = await KimoTracker.findOne(kimoServerID);
+            if (kimoTracker.kimoActive == false) userData.currentState = DANGER;
             userData.postedToday = false;
             await userData.save();
 

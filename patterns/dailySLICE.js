@@ -12,7 +12,6 @@ module.exports = async (client) => {
     // console.log (currentDate.getDay());
     
     if (result == null) return;
-    if (result.kimoActive == false) return console.log ('kimo not active.');
     console.log ('kimo active...');
 
         // perform twelve o clock check
@@ -20,8 +19,8 @@ module.exports = async (client) => {
 
 
             const KimoServer = await client.guilds.fetch(kimoServerID);
-            const kimoChannel = KimoServer.channels.cache.get(kimoChannelDungeonID);
-            const kimoChannelDungeon = KimoServer.channels.cache.get(dun);
+            const kimoChannel = KimoServer.channels.cache.get(kimoChannelID);
+            const kimoChannelDungeon = KimoServer.channels.cache.get(kimoChannelDungeonID);
             const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
 
 
@@ -44,6 +43,15 @@ module.exports = async (client) => {
                 botLogChannel.send('NEW DAY, SLICING...');
                 kimoChannel.send ('NEW DAY, SLICING...');
                 kimoChannelDungeon.send ('NEW DAY, SLICING...');
+
+
+                if (result.kimoActive == false) {
+
+                    botLogChannel.send('Kimo not active, SLICING non-lethal');
+                    kimoChannel.send ('Kimo not active, SLICING non-lethal');
+                    kimoChannelDungeon.send ('Kimo not active, SLICING non-lethal');
+                }
+
 
                 slice(client);
 
