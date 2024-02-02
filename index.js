@@ -46,6 +46,7 @@ client.once(Events.ClientReady, async c => {
   // (await KimoServer.members.fetch ('865147754358767627')).roles.set(['1193249042696777869']);
 
   botLogChannel.send (`# I've awoken.`);
+  botLogChannel.send (`Tracking Role ${participantRoleID}`);
 
   postListener(client);
   dailySLICE(client);
