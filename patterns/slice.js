@@ -2,7 +2,8 @@ const KimoTracker = require('../models/kimoTracker');
 const UserState = require('../models/userState');
 const createWeeklySummary = require('./createWeeklySummary');
 const updateUserState = require('./updateUserState');
-const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID } = require('../ids.json');
+const { kimoChannelID, kimoServerID, botLogChannelID, participantGroup } = require('../ids.json');
+const UserData = require('../models/userData');
 
 module.exports = async (client) => {
     
@@ -12,22 +13,32 @@ module.exports = async (client) => {
         const KimoServer = await client.guilds.fetch(kimoServerID);
         const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
 
-        await KimoServer.members.fetch();
-        const members = await KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
+        const members = await KimoServer.members.fetch();
+        // const members = await KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
 
         await members.forEach( async member => {
+
+            // slice only the group assigned to it.
+
+            const result = await UserData.findOne({userID: member.user.id});
+            if (!result) return;
+            if (result.group != participantGroup) return;
+
+            // do not slice if group not match.
 
             if (member.user.bot) return;
 
             const userData = await UserState.findOne ({ userID: member.user.id })
             if (userData.currentState === 'DEAD') return;
 
+            // 
+
             if (userData) {
+
             const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
             botLogChannel.send (`Slicing ${member}, changing state to ${userData.currentState} to ${staggerState(userData.currentState)}`, {"allowed_mentions": {"parse": []}})
             
             // if (staggerState(userData.currentState) === 'DEAD') {
-                
             // }
 
             userData.currentState = staggerState(userData.currentState);
@@ -48,9 +59,9 @@ module.exports = async (client) => {
 
         });
 
-        if (currentDate.getDay() === 6) {
-            await createWeeklySummary(client);
-        }
+        // if (currentDate.getDay() === 6) {
+        //     await createWeeklySummary(client);
+        // }
 
 
 };

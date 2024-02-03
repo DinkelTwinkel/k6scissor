@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { Client, Events, GatewayIntentBits, ActivityType, PermissionsBitField } = require('discord.js');
 const { token, mongourl } = require('./keys.json');
-const { kimoChannelID, kimoServerID, botLogChannelID, participantRoleID, kimoChannelDungeonID } = require('./ids.json');
+const { kimoChannelID, kimoServerID, botLogChannelID, participantGroup, kimoChannelDungeonID } = require('./ids.json');
 require('log-timestamp');
 
 // Create a new client instance
@@ -46,7 +46,7 @@ client.once(Events.ClientReady, async c => {
   // (await KimoServer.members.fetch ('865147754358767627')).roles.set(['1193249042696777869']);
 
   botLogChannel.send (`# I've awoken.`);
-  botLogChannel.send (`Tracking Role ${participantRoleID}`);
+  botLogChannel.send (`Tracking Kimo Cluster ${participantGroup}`);
 
   postListener(client);
   dailySLICE(client);
