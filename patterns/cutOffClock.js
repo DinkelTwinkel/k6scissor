@@ -27,18 +27,18 @@ module.exports = async (client) => {
 
     //console.log(nextUTCDay.getDay());
 
-    if (nextUTCDay.getDay() === 0 || nextUTCDay.getDay() === 1) {
-        client.user.setPresence({
-            activities: [{ name: `WEEKEND MODE`, type: ActivityType.Watching }],
-            status: 'Online',
-        });
-    }
+    // if (nextUTCDay.getDay() === 0 || nextUTCDay.getDay() === 1) {
+    //     client.user.setPresence({
+    //         activities: [{ name: `WEEKEND MODE`, type: ActivityType.Watching }],
+    //         status: 'Online',
+    //     });
+    // }
 
-    else {
+    // else {
         client.user.setPresence({
         activities: [{ name: `${differenceMinutes} minutes Left`, type: ActivityType.Watching }],
         status: 'dnd',
         });
-    }
+    // }
 
 };
