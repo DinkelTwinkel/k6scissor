@@ -26,6 +26,7 @@ const slice = require('./patterns/slice');
 const UserState = require('./models/userState');
 const CUTOFFCLOCK = require('./patterns/cutOffClock');
 const createWeeklySummary = require('./patterns/createWeeklySummary');
+const UserData = require('./models/userData');
 registerCommands;
 
 client.once(Events.ClientReady, async c => {
@@ -126,14 +127,36 @@ client.on(Events.MessageCreate, async (message) => {
       } 
       if (command === 'assignall') {
 
+        // const KimoServer = await client.guilds.fetch(kimoServerID);
+        // await KimoServer.members.fetch();
+        // const members = KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
+        // members.forEach(async member => {
+        //   updateUserState(member);
+        // })
+
         const KimoServer = await client.guilds.fetch(kimoServerID);
-        await KimoServer.members.fetch();
-        const members = KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
-        members.forEach(async member => {
+        const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
+        const members = await KimoServer.members.fetch();
+
+        members.forEach( async member => {
+
+          // slice only the group assigned to it.
+
+          const result = await UserData.findOne({userID: member.user.id});
+          if (!result) return;
+          if (result.group != participantGroup) return;
+
+          // do not slice if group not match.
+
+          if (member.user.bot) return;
+          
           updateUserState(member);
-        })
+
+        });
 
         message.reply('updating user states for all members');
+        botLogChannel.send('updating user states for all members');
+        
       } 
       if (command === 'forceslice') {
         console.log ('force slice detected');
