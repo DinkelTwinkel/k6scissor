@@ -29,12 +29,11 @@ module.exports = async (client) => {
             if (member.user.bot) return;
 
             const userData = await UserState.findOne ({ userID: member.user.id })
-            if (userData.currentState === 'DEAD') return;
 
             // 
 
             if (userData) {
-
+            if (userData.currentState === 'DEAD') return;
             const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
             botLogChannel.send (`Slicing ${member}, changing state to ${userData.currentState} to ${staggerState(userData.currentState)}`, {"allowed_mentions": {"parse": []}})
             

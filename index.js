@@ -79,6 +79,7 @@ client.on(Events.MessageCreate, async (message) => {
 
       console.log('detected daily slice request x 1');
 
+      botLogChannel.send('affirmative.');
       botLogChannel.send('NEW DAY, SLICING...');
       kimoChannel.send ('NEW DAY, SLICING...');
       kimoChannelDungeon.send ('NEW DAY, SLICING...');
