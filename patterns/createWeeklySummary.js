@@ -22,7 +22,7 @@ module.exports = async (client) => {
         .setDescription(`ALIVE: ${totalLiving} \n DEAD: ${totalDead}`
         );
 
-    kimoChannel.send ({content: 'WEEKEND REACHED ^_^ Slicing paused until monday.', embeds: [embed] });
-    botLogChannel.send ({content: 'WEEKEND REACHED ^_^ Slicing paused until monday cut off.', embeds: [embed] });
+    kimoChannel.send ({content: 'SUMMARY', embeds: [embed] });
+    botLogChannel.send ({content: 'SUMMARY', embeds: [embed] });
 
 };
