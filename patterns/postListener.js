@@ -44,13 +44,17 @@ module.exports = async (client) => {
                   finalRole = '1202876101005803531';
                 }
 
-                message.member.roles.add(finalRole);
-                message.member.roles.remove('1206976652383625307');
+                await message.member.roles.add(finalRole);
+                await message.member.roles.remove('1206976652383625307');
                 await announcementChannel.send(`${message.member} has arrived.`);
 
                 // reply with daily quote.
+
+                const DangerRole = message.guild.roles.cache.get('1202533924040081408');
+                const SafeRole = message.guild.roles.cache.get('1202533882822397972');
+            
                 const embed = new EmbedBuilder()
-                .setDescription("```" + 'Tutorial Complete' + "```" )
+                .setDescription("```" + 'Tutorial Complete' + "```" + '\n' + `${DangerRole} If you have this role, you are in danger.\n ${SafeRole} If you have this role, you are safe.\n Being in ${DangerRole} means you haven't posted today and will die at the daily deadline.` )
                 .setFooter({
                     text: 'Complete Channel Access Granted',
                 })
@@ -59,7 +63,7 @@ module.exports = async (client) => {
                 const response = await message.reply({content: ``, embeds: [embed] })
                 setTimeout(() => {
                     response.delete();
-                }, 10 * 1000);
+                }, 30 * 1000);
                 
             }
 
