@@ -82,7 +82,7 @@ client.on(Events.MessageCreate, async (message) => {
       botLogChannel.send('affirmative.');
       botLogChannel.send('NEW DAY, SLICING...');
       kimoChannel.send ('NEW DAY, SLICING...');
-      kimoChannelDungeon.send ('NEW DAY, SLICING...');
+      // kimoChannelDungeon.send ('NEW DAY, SLICING...');
 
       // const result = await KimoTracker.findOne({ serverId: kimoServerID });
 
