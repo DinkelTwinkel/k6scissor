@@ -4,6 +4,7 @@ const updateUserState = require('./updateUserState');
 const getAllMessagesInChannel = require('./getAllMessagesInChannel');
 const messageDeletionTimer = 5;
 const { kimoChannelID, kimoServerID, botLogChannelID, kimoChannelDungeonID } = require('../ids.json');
+const UserData = require('../models/userData');
 
 module.exports = async (client) => {
 
@@ -25,6 +26,42 @@ module.exports = async (client) => {
             console.log ('valid post detected by user: '+ message.author.id );
 
             let result = await UserState.findOne({ userID: message.author.id });
+
+            if (message.member.roles.cache.get('1206976652383625307')) {
+                let result = await UserData.findOne({ userID: message.member.user.id })
+
+                let announcementChannel;
+                let finalRole;
+      
+                if (result.group === 0) {
+                  //group a
+                  announcementChannel = message.guild.channels.cache.get('1202622607250296832');
+                  finalRole = '1202551817708507136';
+                }
+                else if (result.group === 1) {
+                  //group b
+                  announcementChannel = message.guild.channels.cache.get('1202876942714544148');
+                  finalRole = '1202876101005803531';
+                }
+
+                message.member.roles.add(finalRole);
+                message.member.roles.remove('1206976652383625307');
+                await announcementChannel.send(`${message.member} has arrived.`);
+
+                // reply with daily quote.
+                const embed = new EmbedBuilder()
+                .setDescription("```" + 'Tutorial Complete' + "```" )
+                .setFooter({
+                    text: 'Complete Channel Access Granted',
+                })
+                .setColor("#f9ffcc");
+            
+                const response = await message.reply({content: ``, embeds: [embed] })
+                setTimeout(() => {
+                    response.delete();
+                }, 10 * 1000);
+                
+            }
 
             if (result) {
                 if (result.currentState === 'DEAD') return;
