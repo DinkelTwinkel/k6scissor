@@ -5,6 +5,7 @@ const getAllMessagesInChannel = require('./getAllMessagesInChannel');
 const messageDeletionTimer = 5;
 const { kimoChannelID, kimoServerID, botLogChannelID, kimoChannelDungeonID } = require('../ids.json');
 const UserData = require('../models/userData');
+const Stats = require('../models/statistics');
 
 module.exports = async (client) => {
 
@@ -19,6 +20,10 @@ module.exports = async (client) => {
         if (message.channel.id != kimoChannelID) return;
 
         if (attachmentTest(message) != null) {
+
+            const statTrak = await Stats.findOne({serverID: kimoServerID});
+            statTrak.totalEntries += 1;
+            await statTrak.save();
 
             const currentDate = new Date();
             
@@ -64,6 +69,9 @@ module.exports = async (client) => {
                 setTimeout(() => {
                     response.delete();
                 }, 30 * 1000);
+
+                statTrak.tutorialComplete += 1;
+                await statTrak.save();
                 
             }
 
