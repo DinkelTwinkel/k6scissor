@@ -22,7 +22,7 @@ module.exports = async (client) => {
         if (attachmentTest(message) != null) {
 
             const statTrak = await Stats.findOne({serverID: kimoServerID});
-            statTrak.totalEntries += 1;
+            statTrak.totalPosts += 1;
             await statTrak.save();
 
             const currentDate = new Date();
