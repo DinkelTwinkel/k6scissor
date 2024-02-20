@@ -1,5 +1,6 @@
 const KimoTracker = require('../models/kimoTracker');
 const { ActivityType } = require('discord.js');
+const { participantGroup } = require('../ids.json');
 
 module.exports = async (client) => {
 
@@ -24,6 +25,7 @@ module.exports = async (client) => {
 
     const differenceSeconds = differenceMiliUTC / 1000;
     const differenceMinutes = Math.floor( differenceSeconds / 60);
+    const differenceHours = Math.floor( differenceMinutes / 60);
 
     //console.log(nextUTCDay.getDay());
 
@@ -35,10 +37,19 @@ module.exports = async (client) => {
     // }
 
     // else {
+    if (participantGroup === 1) {
         client.user.setPresence({
         activities: [{ name: `${differenceMinutes} minutes Left`, type: ActivityType.Watching }],
         status: 'dnd',
         });
+    }
+
+    if (participantGroup === 0) {
+        client.user.setPresence({
+        activities: [{ name: `${differenceHours} Hours`, type: ActivityType.Watching }],
+        status: 'dnd',
+        });
+    }
     // }
 
 };
