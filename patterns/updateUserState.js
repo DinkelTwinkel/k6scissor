@@ -9,6 +9,7 @@ module.exports = async (member) => {
 
     if (member.user.bot) return;
     if (member.user.id === member.guild.ownerId) return;
+    if (member.roles.cache.get('1209326206151819336')) return;
 
 
     const result = await UserState.findOne({ userID: member.user.id });
