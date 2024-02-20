@@ -27,6 +27,8 @@ module.exports = async (client) => {
     const differenceMinutes = Math.floor( differenceSeconds / 60);
     const differenceHours = Math.floor( differenceMinutes / 60);
 
+    const trueMinutes = differenceMinutes - (differenceHours * 60);
+
     //console.log(nextUTCDay.getDay());
 
     // if (nextUTCDay.getDay() === 0 || nextUTCDay.getDay() === 1) {
@@ -39,7 +41,7 @@ module.exports = async (client) => {
     // else {
     if (participantGroup === 1) {
         client.user.setPresence({
-        activities: [{ name: `${differenceMinutes} minutes Left`, type: ActivityType.Watching }],
+        activities: [{ name: `${trueMinutes} minutes Left`, type: ActivityType.Watching }],
         status: 'dnd',
         });
     }
