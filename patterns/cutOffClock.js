@@ -41,14 +41,14 @@ module.exports = async (client) => {
     // else {
     if (participantGroup === 1) {
         client.user.setPresence({
-        activities: [{ name: `${trueMinutes} minutes Left`, type: ActivityType.Watching }],
+        activities: [{ name: `${differenceMinutes} minutes Left`, type: ActivityType.Watching }],
         status: 'dnd',
         });
     }
 
     if (participantGroup === 0) {
         client.user.setPresence({
-        activities: [{ name: `${differenceHours} Hours`, type: ActivityType.Watching }],
+        activities: [{ name: `${differenceHours} Hours Left`, type: ActivityType.Watching }],
         status: 'dnd',
         });
     }
