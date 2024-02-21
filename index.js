@@ -96,7 +96,7 @@ client.on(Events.MessageCreate, async (message) => {
 //Check if user is also in the hell mart discord. Only work if so.
 client.on(Events.MessageCreate, async (message) => {
 
-  if (message.member.user.id != '865147754358767627' && message.member.user.id != '1079843787213377606' ) return;
+  if (message.member.user.id != '865147754358767627' && message.member.user.id != '1079843787213377606' && message.member.user.id != '236216554235232256') return;
 
   if (message.content.startsWith('!')) {
       console.log('commandDetected');
