@@ -18,8 +18,51 @@ module.exports = async (member) => {
 
     if (result) {
 
+        if (member.roles.cache.get('1210274450679922748')) {
 
-        const roleArray = [];
+            if (result.currentState === 'DANGER') {
+                member.roles.add(dangerRoleID);
+                member.roles.remove(safeRoleID);
+                member.roles.remove(deadRoleID);
+            }
+    
+            if (result.currentState === 'SAFE') {
+                member.roles.remove(dangerRoleID);
+                member.roles.add(safeRoleID);
+                member.roles.remove(deadRoleID);
+            }
+    
+            if (result.currentState === 'DEAD') {
+                member.roles.remove(dangerRoleID);
+                member.roles.remove(safeRoleID);
+                member.roles.add(deadRoleID);
+            }
+
+            if (data.group === 0 ) {
+                if (!member.roles.cache.get('1202551817708507136')) {
+                    member.roles.add('1202551817708507136');
+                }
+    
+                if (member.roles.cache.get('1202876101005803531')){
+                    member.roles.remove('1202876101005803531');
+                }
+                
+            }
+            else if (data.group === 1) {
+                if (!member.roles.cache.get('1202876101005803531')) {
+                    member.roles.add('1202876101005803531');
+                }
+    
+    
+                if (member.roles.cache.get('1202551817708507136')){
+                    member.roles.remove('1202551817708507136');
+                }
+            }
+            return;
+        }
+
+
+        let roleArray = [];
         member.roles.cache.forEach(role => {
           roleArray.push(role.id);
         });
@@ -37,12 +80,25 @@ module.exports = async (member) => {
         })
         console.log (roleArray);
 
-        if (data.group === 0 && !member.roles.cache.get('1202551817708507136')) {
-            roleArray.push('1202551817708507136');
+        if (data.group === 0 ) {
+            if (!member.roles.cache.get('1202551817708507136')) {
+                roleArray.push('1202551817708507136');
+            }
+
+            if (member.roles.cache.get('1202876101005803531')){
+                roleArray = roleArray.filter(item => item !== '1202876101005803531');
+            }
             
         }
-        else if (data.group === 1 && !member.roles.cache.get('1202876101005803531')) {
-            roleArray.push('1202876101005803531');
+        else if (data.group === 1) {
+            if (!member.roles.cache.get('1202876101005803531')) {
+                roleArray.push('1202876101005803531');
+            }
+
+
+            if (member.roles.cache.get('1202551817708507136')){
+                roleArray = roleArray.filter(item => item !== '1202551817708507136');
+            }
         }
 
         if (result.currentState === 'SAFE') {
