@@ -103,6 +103,8 @@ client.on(Events.MessageCreate, async (message) => {
       // Extract the command and any arguments
       const args = message.content.slice(1).trim().split(/ +/);
       const command = args.shift().toLowerCase();
+
+      const KimoServer = await client.guilds.fetch(kimoServerID);
   
       // Check the command and respond
       if (command === 'createkimo') {
@@ -135,7 +137,7 @@ client.on(Events.MessageCreate, async (message) => {
         //   updateUserState(member);
         // })
 
-        const KimoServer = await client.guilds.fetch(kimoServerID);
+        
         const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
         const members = await KimoServer.members.fetch();
 
@@ -202,6 +204,23 @@ client.on(Events.MessageCreate, async (message) => {
         }
 
       }
+
+      if (command === 'puppet') {
+ 
+        const channelId = args[1];
+
+        console.log(participantGroup);
+
+        if (args[0].toString() == participantGroup.toString()) {
+
+          const targetChannel = KimoServer.channels.cache.get(channelId.toString());
+          const str = message.content.substring(30);
+          targetChannel.send(str);
+
+        }
+
+      }
+      
     }
 })
 
