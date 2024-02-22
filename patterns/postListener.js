@@ -15,9 +15,7 @@ module.exports = async (client) => {
         console.log ('new message detected');
 
         if (message.member.user.bot) return;
-
-        // && message.channel.id != kimoChannelDungeonID 
-        if (message.channel.id != kimoChannelID) return;
+        if (message.channel.id != kimoChannelID && message.channel.id != kimoChannelDungeonID ) return;
 
         if (attachmentTest(message) != null) {
 
