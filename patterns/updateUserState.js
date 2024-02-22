@@ -1,5 +1,6 @@
 const UserState = require('../models/userState');
 const { safeRoleID, dangerRoleID, deadRoleID } = require('../ids.json');
+const UserData = require('../models/userData');
 
 module.exports = async (member) => {
 
@@ -13,6 +14,7 @@ module.exports = async (member) => {
 
 
     const result = await UserState.findOne({ userID: member.user.id });
+    const data = await UserData.findOne({ userID: member.user.id });
 
     if (result) {
 
@@ -34,6 +36,14 @@ module.exports = async (member) => {
   
         })
         console.log (roleArray);
+
+        if (data.group === 0 && !member.roles.cache.get('1202551817708507136')) {
+            roleArray.push('1202551817708507136');
+            
+        }
+        else if (data.group === 1 && !member.roles.cache.get('1202876101005803531')) {
+            roleArray.push('1202876101005803531');
+        }
 
         if (result.currentState === 'SAFE') {
             roleArray.push(safeRole);
