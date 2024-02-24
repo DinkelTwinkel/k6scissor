@@ -124,9 +124,6 @@ module.exports = async (client) => {
                     // remove crown from all users who possess it.
                     // add crown to new user. add user id to database.
 
-                    console.log('new edge king crowned');
-                    await message.member.roles.add('1203621959292952636');
-
                     // remove from previous king.
 
                     await message.guild.members.fetch();
@@ -135,6 +132,9 @@ module.exports = async (client) => {
                     firstPosterMembers.forEach(async member => {
                         await member.roles.remove('1203621959292952636')
                     });
+
+                    console.log('new edge king crowned');
+                    await message.member.roles.add('1203621959292952636');
 
                     edgeTracker.edgeTime = differenceMinutes;
                     edgeTracker.previousKingID = edgeTracker.currentKingID;
