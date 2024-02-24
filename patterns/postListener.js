@@ -19,10 +19,6 @@ module.exports = async (client) => {
 
         if (attachmentTest(message) != null) {
 
-            const statTrak = await Stats.findOne({serverID: kimoServerID});
-            statTrak.totalPosts += 1;
-            await statTrak.save();
-
             const currentDate = new Date();
             
             message.react('✅');
