@@ -6,6 +6,8 @@ const messageDeletionTimer = 5;
 const { kimoChannelID, kimoServerID, botLogChannelID, kimoChannelDungeonID } = require('../ids.json');
 const UserData = require('../models/userData');
 const Stats = require('../models/statistics');
+const EdgeKing = require('../models/edgeKing');
+const KimoTracker = require('../models/kimoTracker');
 
 module.exports = async (client) => {
 
@@ -18,6 +20,8 @@ module.exports = async (client) => {
         if (message.channel.id != kimoChannelID && message.channel.id != kimoChannelDungeonID ) return;
 
         if (attachmentTest(message) != null) {
+
+            const kimoTracker = await KimoTracker.findOne({ serverId: kimoServerID });
 
             const statTrak = await Stats.findOne({serverID: kimoServerID});
             statTrak.totalPosts += 1;
@@ -73,58 +77,94 @@ module.exports = async (client) => {
                 
             }
 
-            if (result) {
-                if (result.currentState === 'DEAD') return;
-                // update user
+                if (result) {
+                    if (result.currentState === 'DEAD') return;
+                    result.currentState = 'SAFE';
+                    result.lastPostTime = currentDate.getTime();
+                    // result.postedToday = true;
 
-                // if (result.postedToday == false) {
+                    await result.save();
+    
+                }
+                else {
+                    // create new
 
-                //     console.log ('havent posted today, creating daily fortune')
-                //     result.streak += 1;
-                //     // reply with daily quote.
-                //     const embed = new EmbedBuilder()
-                //     .setTitle("Daily Fortune")
-                //     .setDescription(await getFortuneCookie(client));
+                    result = new UserState({
+                        userID: message.author.id,
+                        currentState: 'SAFE',
+                        lastPostTime: currentDate.getTime(),
+                        streak: 1,
+                        postedToday: true,
+                    })
 
-                //     const response = await message.reply({content: `VALID POST: Your current streak is ${result.streak}`, embeds: [embed] })
-                //     setTimeout(() => {
-                //         response.delete();
-                //     }, 30 * 1000);
-                // }
+                    await result.save();
+                }
 
-                result.currentState = 'SAFE';
-                result.lastPostTime = currentDate.getTime();
-                // result.postedToday = true;
+                if (result.currentState === 'DEAD' || result.currentState === 'SAFE') {
 
-                await result.save();
+                // edge king maker
 
-                updateUserState(message.member);
+                const edgeTracker = await EdgeKing.findOne({ KimoServerID: message.guild.id});
+
+                console.log ('cutoff clock');
+            
+                const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+                const nextUTCDay = new Date(currentDate.getTime() + millisecondsInDay);
+                nextUTCDay.setHours(12);
+                nextUTCDay.setMinutes(0);
+                nextUTCDay.setSeconds(0);
+                nextUTCDay.setTime(kimoTracker.nextDate);
+            
+                const differenceMiliUTC = nextUTCDay.getTime() - currentDate.getTime();
+                const differenceSeconds = differenceMiliUTC / 1000;
+                const differenceMinutes = differenceSeconds / 60;
+
+                console.log ('edge time: ' + differenceMinutes);
+
+                if (edgeTracker.edgeTime > differenceMinutes) {
+
+                    // remove crown from all users who possess it.
+                    // add crown to new user. add user id to database.
+
+                    console.log('new edge king crowned');
+                    await message.member.roles.add('1203621959292952636');
+
+                    // remove from previous king.
+
+                    await message.guild.members.fetch();
+                    const firstPosterMembers = message.guild.roles.cache.get('1203621959292952636').members;
+                    
+                    firstPosterMembers.forEach(async member => {
+                        member.roles.remove('1203621959292952636')
+                    });
+
+                    edgeTracker.edgeTime = differenceMinutes;
+                    edgeTracker.previousKingID = edgeTracker.currentKingID;
+                    edgeTracker.currentKingID = message.author.id;
+                    edgeTracker.save();
+
+                }
+
+                // first poster 
+
+                if (edgeTracker.firstPostered === false) {
+
+                    await message.guild.members.fetch();
+                    const firstPosterMembers = message.guild.roles.cache.get('1203621622200672308').members;
+                    
+                    firstPosterMembers.forEach(async member => {
+                        member.roles.remove('1203621622200672308')
+                    });
+
+                    await message.member.roles.add('1203621622200672308');
+
+                    edgeTracker.firstPostered = true;
+                    edgeTracker.save();
+                }
             }
-            else {
-                // create new
 
-                result = new UserState({
-                    userID: message.author.id,
-                    currentState: 'SAFE',
-                    lastPostTime: currentDate.getTime(),
-                    streak: 1,
-                    postedToday: true,
-                })
-
-                // reply with daily quote.
-
-                // const embed = new EmbedBuilder()
-                // .setTitle("Daily Fortune")
-                // .setDescription(await getFortuneCookie(client));
-
-                // const response = await message.reply({content: `VALID POST: Your current streak is ${result.streak}`, embeds: [embed] })
-                // setTimeout(() => {
-                //     response.delete();
-                // }, 30 * 1000);
-
-                await result.save();
-                updateUserState(message.member);
-            }
+            await updateUserState(message.member);
 
             // logging
             const KimoServer = await client.guilds.fetch(kimoServerID);
