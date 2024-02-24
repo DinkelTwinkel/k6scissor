@@ -77,30 +77,27 @@ module.exports = async (client) => {
                 
             }
 
-                if (result) {
-                    if (result.currentState === 'DEAD') return;
-                    result.currentState = 'SAFE';
-                    result.lastPostTime = currentDate.getTime();
-                    // result.postedToday = true;
+            if (result) {
+                if (result.currentState === 'DEAD') return;
+                result.currentState = 'SAFE';
+                result.lastPostTime = currentDate.getTime();
+                // result.postedToday = true;
 
-                    await result.save();
-    
-                }
-                else {
-                    // create new
+                await result.save();
+            }
+            else {
+                // create new
+                result = new UserState({
+                    userID: message.author.id,
+                    currentState: 'SAFE',
+                    lastPostTime: currentDate.getTime(),
+                    streak: 1,
+                    postedToday: true,
+                })
+                await result.save();
+            }
 
-                    result = new UserState({
-                        userID: message.author.id,
-                        currentState: 'SAFE',
-                        lastPostTime: currentDate.getTime(),
-                        streak: 1,
-                        postedToday: true,
-                    })
-
-                    await result.save();
-                }
-
-                if (result.currentState === 'DEAD' || result.currentState === 'SAFE') {
+            if (result.currentState === 'DEAD' || result.currentState === 'SAFE') {
 
                 // edge king maker
 
@@ -136,7 +133,7 @@ module.exports = async (client) => {
                     const firstPosterMembers = message.guild.roles.cache.get('1203621959292952636').members;
                     
                     firstPosterMembers.forEach(async member => {
-                        member.roles.remove('1203621959292952636')
+                        await member.roles.remove('1203621959292952636')
                     });
 
                     edgeTracker.edgeTime = differenceMinutes;
