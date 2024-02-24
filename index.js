@@ -220,6 +220,19 @@ client.on(Events.MessageCreate, async (message) => {
         }
 
       }
+
+      if (command === 'updatestate') {
+ 
+        const memberID = args[0];
+
+        console.log('update user state: ' + memberID);
+
+        const targetMember = KimoServer.members.cache.get(memberID);
+        message.reply (`refreshing colour roles for ${targetMember}`);
+
+        updateUserState(targetMember);
+
+      }
       
     }
 })
