@@ -37,8 +37,9 @@ module.exports = async (client) => {
             const kimoTracker = await KimoTracker.findOne({serverId: kimoServerID});
             botLogChannel.send (`Slicing ${member}, changing state to ${userData.currentState} to ${staggerState(userData.currentState)}`, {"allowed_mentions": {"parse": []}})
             
-            // if (staggerState(userData.currentState) === 'DEAD') {
-            // }
+            if (member.roles.cache.get('1211141295666495508')){
+                member.roles.remove('1211141295666495508');
+            }
 
             userData.currentState = staggerState(userData.currentState);
             console.log (kimoTracker.kimoActive);
@@ -54,6 +55,9 @@ module.exports = async (client) => {
             else {
                 botLogChannel.send (`STARTING KIMO FOR ${member}, STATE SET TO DANGER`, {"allowed_mentions": {"parse": []}})
             }
+
+
+            
             await updateUserState(member);
 
         });
