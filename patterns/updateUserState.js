@@ -80,7 +80,7 @@ module.exports = async (member) => {
         })
         console.log (roleArray);
 
-        if (data.group === 0 ) {
+        if (data.group === 0 && !member.roles.cache.get('1202749571957006348')) {
             if (!member.roles.cache.get('1202551817708507136')) {
                 roleArray.push('1202551817708507136');
             }
@@ -90,7 +90,7 @@ module.exports = async (member) => {
             }
             
         }
-        else if (data.group === 1) {
+        else if (data.group === 1 && !member.roles.cache.get('1202749571957006348')) {
             if (!member.roles.cache.get('1202876101005803531')) {
                 roleArray.push('1202876101005803531');
             }
