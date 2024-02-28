@@ -104,6 +104,11 @@ module.exports = async (client) => {
                 await result.save();
 
                 // randomly add cubby role.
+                
+                if (message.member.roles.cache.get('1211922777741860874')) {
+                    await message.member.roles.remove('1211922777741860874');
+                    botLogChannel.send (`Removing cubby role from ${message.member}`, {"allowed_mentions": {"parse": []}})
+                }
 
                 const randomCubbyChance = Math.random() * 10;
 
@@ -112,10 +117,6 @@ module.exports = async (client) => {
                     botLogChannel.send (`Rolled secret cubby! Giving cubby role to ${message.member}`, {"allowed_mentions": {"parse": []}})
                 }
 
-                if (message.member.roles.cache.get('1211922777741860874')) {
-                    await message.member.roles.remove('1211922777741860874');
-                    botLogChannel.send (`Removing cubby role from ${message.member}`, {"allowed_mentions": {"parse": []}})
-                }
 
                 // edge king maker
 
