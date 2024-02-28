@@ -21,6 +21,9 @@ module.exports = async (client) => {
 
         if (attachmentTest(message) != null) {
 
+            const KimoServer = await client.guilds.fetch(kimoServerID);
+            const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
+
             const kimoTracker = await KimoTracker.findOne({ serverId: kimoServerID });
 
             const statTrak = await Stats.findOne({serverID: kimoServerID});
@@ -179,8 +182,6 @@ module.exports = async (client) => {
             await updateUserState(message.member);
 
             // logging
-            const KimoServer = await client.guilds.fetch(kimoServerID);
-            const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
 
             botLogChannel.send (`Valid image post detected by user ${message.member}, changing state to SAFE`, {"allowed_mentions": {"parse": []}})
 
