@@ -77,27 +77,42 @@ module.exports = async (client) => {
                 
             }
 
-            if (result) {
-                if (result.currentState === 'DEAD') return;
-                result.currentState = 'SAFE';
-                result.lastPostTime = currentDate.getTime();
-                // result.postedToday = true;
+            if (!result) {
 
-                await result.save();
-            }
-            else {
-                // create new
                 result = new UserState({
                     userID: message.author.id,
-                    currentState: 'SAFE',
+                    currentState: 'DANGER',
                     lastPostTime: currentDate.getTime(),
                     streak: 1,
                     postedToday: true,
                 })
                 await result.save();
+
             }
 
-            if (result.currentState === 'DEAD' || result.currentState === 'SAFE') {
+            if (result.currentState === 'DEAD') return;
+
+            if (result.currentState === 'DANGER') {
+
+                result.currentState = 'SAFE';
+                result.lastPostTime = currentDate.getTime();
+                // result.postedToday = true;
+
+                await result.save();
+
+                // randomly add cubby role.
+
+                const randomCubbyChance = Math.random() * 10;
+
+                if (randomCubbyChance > 7) {
+                    await message.member.roles.add('1211922777741860874');
+                    botLogChannel.send (`Rolled secret cubby! Giving cubby role to ${message.member}`, {"allowed_mentions": {"parse": []}})
+                }
+
+                if (message.member.roles.cache.get('1211922777741860874')) {
+                    await message.member.roles.remove('1211922777741860874');
+                    botLogChannel.send (`Removing cubby role from ${message.member}`, {"allowed_mentions": {"parse": []}})
+                }
 
                 // edge king maker
 
