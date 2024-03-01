@@ -127,7 +127,7 @@ module.exports = async (client) => {
                 const randomPineAppleChance = Math.random() * 10;
 
                 if (randomCubbyChance > 9) {
-                    await message.member.roles.add('11211707758563561472');
+                    await message.member.roles.add('1211707758563561472');
                     //botLogChannel.send (`Rolled secret cubby! Giving cubby role to ${message.member}`, {"allowed_mentions": {"parse": []}})
                 }
 
