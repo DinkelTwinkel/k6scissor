@@ -88,7 +88,7 @@ client.once(Events.ClientReady, async c => {
       ticktokChannel.send (messageArray[Math.floor(Math.random()*messageArray.length)]);
     }
 
-  }, 1000 * 120 * Math.random() * (1 + participantGroup));
+  }, 1000 * 120 * (1 + participantGroup));
 
   // members.forEach(member => {
   //   if (member.user.bot) return;
