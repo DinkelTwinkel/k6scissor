@@ -75,7 +75,7 @@ client.once(Events.ClientReady, async c => {
       ticktokChannel.send ('# TOCK')
     }
 
-  }, 1000 * (2(1 + participantGroup)));
+  }, 1000 * (2*(1 + participantGroup)));
 
   setInterval(() => {
     
