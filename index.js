@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { Client, Events, GatewayIntentBits, ActivityType, PermissionsBitField } = require('discord.js');
 const { token, mongourl } = require('./keys.json');
-const { kimoChannelID, kimoServerID, botLogChannelID, participantGroup, kimoChannelDungeonID } = require('./ids.json');
+const { kimoChannelID, kimoServerID, botLogChannelID, participantGroup, kimoChannelDungeonID, dangerRoleID, safeRoleID } = require('./ids.json');
 require('log-timestamp');
 
 // Create a new client instance
@@ -58,6 +58,45 @@ client.once(Events.ClientReady, async c => {
     CUTOFFCLOCK(client);
     
   }, 1000 * 10);
+
+  await KimoServer.members.fetch();
+
+  const members = KimoServer.members.cache.filter(member => !member.roles.cache.has(dangerRoleID) && !member.roles.cache.has(safeRoleID));
+  console.log ('tutorial stuck members: ' + members.size);
+
+
+  const ticktokChannel = KimoServer.channels.cache.get('1213455614194225153');
+  setInterval(() => {
+    
+    if (participantGroup === 0) {
+      ticktokChannel.send ('# TICK')
+    }
+    else {
+      ticktokChannel.send ('# TOCK')
+    }
+
+  }, 1000 * 2(1 + participantGroup));
+
+  setInterval(() => {
+    
+    if (participantGroup === 0) {
+      const messageArray = ['...','Strive.',`They must grow.`,`We'll keep going until the end.`,'Soon.','At last.', 'Until the end. Fight.']
+      ticktokChannel.send (messageArray[Math.floor(Math.random()*messageArray.length)]);
+    }
+    else {
+      const messageArray = ['How long do we have to do this for?','SNIP SNIP',`I'm kinda hungry`,`do you think they'll make it`,'how many will die today?','I hope they make it.', 'Survive. Please.','Do we just do this like... all day?']
+      ticktokChannel.send (messageArray[Math.floor(Math.random()*messageArray.length)]);
+    }
+
+  }, 1000 * 120 * Math.random() * (1 + participantGroup));
+
+  // members.forEach(member => {
+  //   if (member.user.bot) return;
+  //   if (member.user.id === member.guild.ownerId) return;
+  //   if (member.roles.cache.get('1209326206151819336')) return;
+  //   console.log ('kicking ' + member.displayName);
+  //   member.kick();
+  // });
 
 
 });
