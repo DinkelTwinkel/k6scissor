@@ -11,9 +11,10 @@ const userDataSchema = new Schema({
 	interests: ({ type: String, default: 'n/a' }),
 	energy: ({ type: Number, default: 1 }),
 	money: ({ type: Number, default: 0 }),
-	profilePicture: ({ type: String, default: 'https://cdn.discordapp.com/attachments/1192661895296073780/1202745654816940032/0rebqwiri5w61.gif?ex=65ce932e&is=65bc1e2e&hm=b0defd1a38b58e0b3cd22db39cd114dcc6fade735cbff29ac6fb6ee5e826af93&' }),
+	profilePicture: ({ type: String, default: 'https://cdn.discordapp.com/attachments/1154159412160757810/1205149790355197983/default-player-character.gif?ex=65d75234&is=65c4dd34&hm=e301ebd9079bc14021af1bc0a06508d5e5a46284c1072a8a4a3a18834719d5c1&' }),
     profileColour: ({ type: String, default: '#9e5b08' }),
-	group: ({ type: Number, default: 0 })
+	group: ({ type: Number, default: 0 }),
+	emojiReactAwardAmount: ({ type: Number, default: 0 }),
 
 }, { timestamps: true });
 

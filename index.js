@@ -27,6 +27,8 @@ const UserState = require('./models/userState');
 const CUTOFFCLOCK = require('./patterns/cutOffClock');
 const createWeeklySummary = require('./patterns/createWeeklySummary');
 const UserData = require('./models/userData');
+const dailyLock = require('./patterns/dailyLock');
+const getAllMessagesInChannelLastTwoDays = require('./patterns/getAllMessagesInChannelLastTwoDays');
 registerCommands;
 
 client.once(Events.ClientReady, async c => {
@@ -272,6 +274,30 @@ client.on(Events.MessageCreate, async (message) => {
         updateUserState(targetMember);
 
       }
+
+      if (command === 'testlock') {
+ 
+        dailyLock(client);
+
+      }
+
+      if (command === 'test') {
+        const KimoServer = await client.guilds.fetch(kimoServerID);
+        const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
+
+        message.channel.send(`LOOKING FOR RANDOM`);
+
+        const messages = await getAllMessagesInChannelLastTwoDays(message.channel);
+
+        message.channel.send(`TOTAL FOUND: ${messages.length}`);
+
+        //const randomIndex = Math.floor(Math.random() *  messages.length);
+
+        const randomMessage = Array.from( messages )[messages.length-1];
+
+        message.channel.send(`FOUND: <t:${Math.floor(randomMessage.createdAt.getTime()/1000)}:R>`);
+
+      } 
       
     }
 })

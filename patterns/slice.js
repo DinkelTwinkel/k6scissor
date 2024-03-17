@@ -4,17 +4,22 @@ const createWeeklySummary = require('./createWeeklySummary');
 const updateUserState = require('./updateUserState');
 const { kimoChannelID, kimoServerID, botLogChannelID, participantGroup } = require('../ids.json');
 const UserData = require('../models/userData');
+const dailyLock = require('./dailyLock');
 
 module.exports = async (client) => {
     
 
         const currentDate = new Date();
+        
+        const now = new Date();
 
         const KimoServer = await client.guilds.fetch(kimoServerID);
         const botLogChannel = KimoServer.channels.cache.get(botLogChannelID);
 
         const members = await KimoServer.members.fetch();
         // const members = await KimoServer.members.cache.filter(member => member.roles.cache.has(participantRoleID));
+
+        dailyLock(client);
 
         await members.forEach( async member => {
 
@@ -79,3 +84,4 @@ function staggerState(currentState) {
     }
 
 }
+

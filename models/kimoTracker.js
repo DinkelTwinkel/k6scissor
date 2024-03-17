@@ -7,7 +7,14 @@ const kimoTracker = new Schema({
 	currentDate: { type: Number, required: true },
 	nextDate: { type: Number, default: 0 },
 	kimoActive: { type: Boolean, default: false },
-	dailyDeadline: { type: Number, default: 12 },
+	kimoInfiniteMode: { type: Boolean, default: false },
+	kimoLiveDays: { type: Number, required: true,  default: 0  },
+	deadKickedToday: { type: Boolean, default: false },
+	alarmOne: { type: Boolean, default: false },
+	alarmTwo: { type: Boolean, default: false },
+	alarmThree: { type: Boolean, default: false },
+	currentPeriodLength: { type: Number, default: 0 },
+	slaughter: { type: Boolean, default: false },
 
 }, { timestamps: true });
 
