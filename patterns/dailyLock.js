@@ -33,7 +33,7 @@ module.exports = async (client) => {
                     marketFairCreate(client, '1202876942714544148');
                 }
             }
-        }, 60 * 1000 * 1);
+        }, 60 * 1000 * 17);
 
 
 };
