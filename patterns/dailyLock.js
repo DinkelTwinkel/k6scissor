@@ -24,14 +24,14 @@ module.exports = async (client) => {
             if (participantGroup === 0) channelUnLock (client);
             if (participantGroup === 1) {
                 const whyAmIDead = KimoServer.channels.cache.get('1205110914215575562');
-                whyAmIDead.send ({content: `YOU ARE DEAD <@&${'22'}>, ASK US QUESTIONS HERE OR GO TO THE LAST WORDS CHANNEL TO SAY YOUR GOOD BYES. YOU CAN ALSO USE /GIVE TO PASS ON YOUR SEASHELLS TO YOUR LOVED ONES.`});
-                if (now.getDay() >= 5 && now.getDay() != 0) {
-                    marketFairCreate(client, kimoChannelID);
-                    marketFairCreate(client, '1207882126154932294');
-                    marketFairCreate(client, '1209347683676852224');
-                    marketFairCreate(client, '1202622607250296832');
-                    marketFairCreate(client, '1202876942714544148');
-                }
+                whyAmIDead.send ({content: `YOU ARE DEAD <@&${'1202533941727203368'}>, ASK US QUESTIONS HERE OR GO TO THE LAST WORDS CHANNEL TO SAY YOUR GOOD BYES. YOU CAN ALSO USE /GIVE TO PASS ON YOUR SEASHELLS TO YOUR LOVED ONES.`});
+                // if (now.getDay() >= 5 && now.getDay() != 0) {
+                //     marketFairCreate(client, kimoChannelID);
+                //     marketFairCreate(client, '1207882126154932294');
+                //     marketFairCreate(client, '1209347683676852224');
+                //     marketFairCreate(client, '1202622607250296832');
+                //     marketFairCreate(client, '1202876942714544148');
+                // }
             }
         }, 60 * 1000 * 17);
 
